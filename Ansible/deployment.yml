@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: retail-app
+  labels:
+    app: retail
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: retail
+  template:
+    metadata:
+      labels:
+        app: retail
+    spec:
+      containers:
+      - name: retail
+        image: ahmedabdelraouf/retail-app:latest
+        ports:
+        - containerPort: 8080
