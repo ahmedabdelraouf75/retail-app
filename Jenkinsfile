@@ -2,22 +2,23 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = 'dockerhub-Credentials'       // your DockerHub credentials in Jenkins
-        DOCKER_IMAGE_NAME = 'retail-app'        // your DockerHub repo name
+        DOCKER_HUB_CREDENTIALS = 'dockerhub-Credentials'               // ID from Jenkins credentials
+        DOCKER_IMAGE_NAME = 'ahmedabdelraouf/retail-app'               // Your DockerHub repo name
     }
 
     stages {
 
         stage('Checkout Source Code') {
             steps {
-                cleanWs()
-                git branch: 'main', credentialsId: 'github-pat', url: 'https://github.com/ahmedabdelraouf75/retail-app.git'
+                git branch: 'main',
+                    credentialsId: 'github-pat',
+                    url: 'https://github.com/ahmedabdelraouf75/retail-app.git'
             }
         }
 
         stage('Build and Test Maven Project') {
             steps {
-                sh 'mvn clean install -DskipTests'   // generates target/retail-app.war
+                sh 'mvn clean install -DskipTests'
             }
         }
 
@@ -32,12 +33,12 @@ pipeline {
             steps {
                 script {
                     docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
-                    docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").tag("${DOCKER_IMAGE_NAME}:latest")
+                    docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").tag("latest")
                 }
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Push Docker Image to DockerHub') {
             steps {
                 script {
                     withDockerRegistry(credentialsId: "${DOCKER_HUB_CREDENTIALS}") {
@@ -48,9 +49,9 @@ pipeline {
             }
         }
 
-        stage('Verify Deployment') {
+        stage('Verify Deployment Step') {
             steps {
-                echo "✅ Docker image built and pushed to DockerHub. You can now deploy it manually to Kubernetes."
+                echo "✅ Docker image pushed to DockerHub successfully. Ready for manual deployment to Kubernetes."
             }
         }
     }
@@ -60,7 +61,7 @@ pipeline {
             echo '✅ Pipeline finished successfully!'
         }
         failure {
-            echo '❌ Pipeline failed. Check logs for details.'
+            echo '❌ Pipeline failed. Check the console output for errors.'
         }
     }
 }
