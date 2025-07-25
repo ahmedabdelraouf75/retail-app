@@ -1,0 +1,15 @@
+- name: Deploy Dockerized App on Remote Host
+  hosts: app
+  become: yes
+  tasks:
+    - name: Pull latest image
+      shell: docker pull ahmedabdelraouf/retail-app:latest
+
+    - name: Stop old container
+      shell: docker stop retail-app || true
+
+    - name: Remove old container
+      shell: docker rm retail-app || true
+
+    - name: Run container
+      shell: docker run -d --name retail-app -p 8080:8080 ahmedabdelraouf/retail-app:latest
