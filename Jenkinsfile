@@ -2,11 +2,12 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = 'dockerhub-Credentials'
-        DOCKER_IMAGE_NAME = 'ahmedabdelraouf/retail-app'
+        DOCKER_HUB_CREDENTIALS = 'dockerhub-Credentials'       // your DockerHub credentials in Jenkins
+        DOCKER_IMAGE_NAME = 'ahmedabdelraouf/retail-app'        // your DockerHub repo name
     }
 
     stages {
+
         stage('Checkout Source Code') {
             steps {
                 cleanWs()
@@ -16,7 +17,7 @@ pipeline {
 
         stage('Build and Test Maven Project') {
             steps {
-                sh 'mvn clean install -DskipTests'
+                sh 'mvn clean install -DskipTests'   // generates target/retail-app.war
             }
         }
 
@@ -31,7 +32,7 @@ pipeline {
             steps {
                 script {
                     docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
-                    docker.tag("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}", "${DOCKER_IMAGE_NAME}:latest")
+                    docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").tag("${DOCKER_IMAGE_NAME}:latest")
                 }
             }
         }
@@ -49,7 +50,7 @@ pipeline {
 
         stage('Verify Deployment') {
             steps {
-                echo "Docker image pushed successfully. Proceed to deploy manually using Ansible."
+                echo "✅ Docker image built and pushed to DockerHub. You can now deploy it manually to Kubernetes."
             }
         }
     }
