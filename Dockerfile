@@ -9,10 +9,10 @@ RUN rm -rf ROOT
 
 # Copy the WAR file from the Jenkins workspace into the webapps directory
 # The WAR file will be named retail-app.war after Maven build
-COPY target/retail-app.war .
+COPY target/retail-app-1.0.war .
 
 # Rename the WAR file to ROOT.war if you want it accessible at the root context
-RUN mv retail-app.war ROOT.war
+RUN mv retail-app-1.0.war ROOT.war
 
 # Expose the Tomcat default port
 EXPOSE 8080
