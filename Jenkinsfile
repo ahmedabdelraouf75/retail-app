@@ -55,10 +55,10 @@ pipeline {
         }
     }
 
-    //post {
-        //always {
+    post {
+        always {
             //cleanWs()
-        //}
+        }
         success {
             echo '✅ Pipeline finished successfully!'
         }
