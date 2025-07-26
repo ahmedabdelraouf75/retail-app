@@ -50,7 +50,8 @@ retail-app/
 │   ├── deployment.yaml
 │   └── service.yaml
 ├── src/
-│   └── main/java/com/retail/...
+│   └── main/java/com/...
+|   └── test/java/com/...
 ├── pom.xml
 └── README.md
 ```
