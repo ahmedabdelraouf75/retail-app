@@ -82,8 +82,8 @@ sudo apt install jenkins -y
 ```bash
 # Inside Jenkinsfile
 mvn clean install
-docker build -t yourdockerhub/retail-app .
-docker push yourdockerhub/retail-app
+docker build -t ahmedabdelraoif/retail-app .
+docker push ahmedabdelraouf/retail-app
 ```
 
 ---
